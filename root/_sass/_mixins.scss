@@ -1,0 +1,5 @@
+// フォントサイズ
+@mixin fz($px) {
+	font-size: $px + px;
+	font-size: ($px / 10) * 1rem;
+}
