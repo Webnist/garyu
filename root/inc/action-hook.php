@@ -55,31 +55,6 @@
 # 1. wp_head
 /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 
-/**
- * Add the viewport meta tag
- */
-function {%= prefix %}_head_viewport_meta() {
-	echo <<< EOT
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-EOT;
-}
-add_action( 'wp_head', '{%= prefix %}_head_viewport_meta' );
-
-/**
- * Conditional comments for Internet Explorer.
- * Load the html5shiv.js to version 8 of Internet Explorer.
- */
-function {%= prefix %}_head_conditional_comment() {
-	$template_directory_uri = get_template_directory_uri();
-	echo <<< EOT
-<!--[if lt IE 9]>
-	<script src="{$template_directory_uri}/js/html5shiv.js" type="text/javascript"></script>
-<![endif]-->
-EOT;
-}
-add_action( 'wp_head', '{%= prefix %}_head_conditional_comment' );
-
-
 /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 #  2. {%= prefix %}_before_body
 /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
