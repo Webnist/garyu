@@ -61,65 +61,62 @@ function {%= prefix %}_setup() {
 endif; // {%= prefix %}_setup
 add_action( 'after_setup_theme', '{%= prefix %}_setup' );
 
-if ( !function_exists( '{%= prefix %}_widgets_init' ) ) :
-/**
- * Register widgetized area and update sidebar with default widgets
- */
-function {%= prefix %}_widgets_init() {
-
-	register_sidebar( array(
-		'name'          => __( 'Sidebar', '{%= prefix %}' ),
-		'id'            => 'sidebar-1',
-		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-		'after_widget'  => '</aside>',
-		'before_title'  => '<h1 class="widget-title">',
-		'after_title'   => '</h1>',
-	) );
-
-}
-endif; // {%= prefix %}_widgets_init
-add_action( 'widgets_init', '{%= prefix %}_widgets_init' );
-
-/**
- * Enqueue scripts and styles
- */
-function {%= prefix %}_scripts_styles() {
-	// Adds JavaScript to pages with the comment form to support sites with
-	// threaded comments (when in use).
-	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) )
-		wp_enqueue_script( 'comment-reply' );
-
-	// Loads JavaScript file with functionality specific to {%= prefix %}.
-	wp_enqueue_script( '{%= prefix %}-script', get_stylesheet_directory_uri() . '/js/{%= file_name %}.min.js', array('jquery'), {%= prefix %}_file_time_stamp( '/js/{%= file_name %}.min.js' ), true );
-
-	// Loads our main stylesheet.
-	wp_enqueue_style( '{%= prefix %}-style', get_stylesheet_directory_uri() . '/css/{%= file_name %}.min.css', array(), {%= prefix %}_file_time_stamp( '/css/{%= file_name %}.min.css' ) );
-}
-add_action( 'wp_enqueue_scripts', '{%= prefix %}_scripts_styles' );
-
-if ( !function_exists( '{%= prefix %}_theme_require' ) ) :
 /**
  * load the file in the inc directory
  */
 function {%= prefix %}_theme_require() {
-	/* require function */
-	$dir = get_template_directory() . '/inc/';
-	$handle = opendir( $dir );
-	while ( false !== ( $ent = readdir( $handle ) ) ) {
-		if ( !is_dir( $ent ) && strtolower( substr( $ent, -4 ) ) == ".php" ) {
-			require $dir . $ent;
+
+	/* global require function */
+	if ( file_exists( get_template_directory() . '/inc/') ) {
+		$dir = get_template_directory() . '/inc/';
+		$handle = opendir( $dir );
+		while ( false !== ( $ent = readdir( $handle ) ) ) {
+			if ( !is_dir( $ent ) && strtolower( substr( $ent, -4 ) ) == ".php" ) {
+				require $dir . $ent;
+			}
 		}
+		closedir( $handle );
 	}
-	closedir( $handle );
+
+	/* Parent require function */
+	if ( !is_child_theme() && file_exists( get_template_directory() . '/parent_inc/') ) {
+		$dir = get_template_directory() . '/parent_inc/';
+		$handle = opendir( $dir );
+		while ( false !== ( $ent = readdir( $handle ) ) ) {
+			if ( !is_dir( $ent ) && strtolower( substr( $ent, -4 ) ) == ".php" ) {
+				require $dir . $ent;
+			}
+		}
+		closedir( $handle );
+	}
+
+	/* Child require function */
+	if( is_child_theme() && file_exists( get_stylesheet_directory() . '/child_inc/') ) {
+		$dir = get_stylesheet_directory() . '/child_inc/';
+		$handle = opendir( $dir );
+		while ( false !== ( $ent = readdir( $handle ) ) ) {
+			if ( !is_dir( $ent ) && strtolower( substr( $ent, -4 ) ) == ".php" ) {
+				require $dir . $ent;
+			}
+		}
+		closedir( $handle );
+	}
 }
-endif; // {%= prefix %}_theme_require
 add_action( 'after_setup_theme', '{%= prefix %}_theme_require' );
 
 if ( !function_exists( '{%= prefix %}_file_time_stamp' ) ) :
 	/**
 	 * Gets the time stamp of the file
 	 */
-	function {%= prefix %}_file_time_stamp( $file = null, $path = null, $child = false ) {
+	function {%= prefix %}_file_time_stamp( $file = null, $args = array() ) {
+
+		$default = array(
+			'path'  => null,
+			'child' => false,
+		);
+		$args    = wp_parse_args( $args, $default );
+		extract($args);
+
 		if ( !$path && $child )
 			$path = get_stylesheet_directory();
 

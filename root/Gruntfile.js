@@ -25,20 +25,23 @@ module.exports = function( grunt ) {
                 'js/{%= file_name %}.js'
             ],
             options: {
+                bitwise: true,
                 curly:   true,
                 eqeqeq:  true,
+                unused:  true,
                 immed:   true,
                 latedef: true,
                 newcap:  true,
                 noarg:   true,
                 sub:     true,
-                undef:   true,
+                undef:   false,
                 boss:    true,
-                eqnull:  true,
                 globals: {
+                    devel:   true,
+                    debug:   true,
                     exports: true,
                     module:  false,
-                    jQuery: false,
+                    jQuery: true,
                     Console: false
                 }
             }
@@ -146,9 +149,6 @@ module.exports = function( grunt ) {
         exec: {
             gettext: {
                 command: 'php ~/wordpress-i18n-tools/makepot.php wp-theme . languages/{%= prefix %}.pot'
-            },
-            zip: {
-                command: 'mkdir ../backup\n cp -r ./ ../backup\n mv ../backup/ ./\n rm -rf backup/.sass-cache backup/_compass_config backup/_sass backup/node_modules backup/.gitignore backup/package.json backup/Gruntfile.js backup/.DS_Store backup/.git\n mv backup {%= file_name %}\n zip {%= file_name %}.zip {%= file_name %}/*\n rm -rf {%= file_name %}'
             }
         }
     } );
@@ -182,10 +182,6 @@ module.exports = function( grunt ) {
     grunt.registerTask(
         'i18n',
         ['exec:gettext']
-    );
-    grunt.registerTask(
-        'zip',
-        ['exec:zip']
     );
 
     grunt.util.linefeed = '\n';

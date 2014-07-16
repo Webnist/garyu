@@ -28,7 +28,7 @@ exports.template = function( grunt, init, done ) {
         init.prompt( 'title', 'Megumi Base Themes' ),
         {
             name   : 'prefix',
-            message: 'PHP function prefix (alpha and underscore characters only)',
+            message: 'PHP function prefix',
             default: 'megumi'
         },
         init.prompt( 'description', 'Megumi base theme' ),
@@ -39,19 +39,19 @@ exports.template = function( grunt, init, done ) {
         props.keywords = [];
         props.version = '0.1.0';
         props.devDependencies = {
-            'grunt': '~0.4.1',
-            'grunt-contrib-watch': '~0.5.3',
-            'grunt-contrib-concat': '~0.1.2',
-            'grunt-contrib-uglify': '~0.1.1',
-            'grunt-contrib-jshint': '~0.1.1',
-            'grunt-contrib-nodeunit': '~0.1.2',
-            'grunt-contrib-cssmin': '~0.6.2',
-            'grunt-contrib-compass': '*',
+            'grunt': '~0.4.5',
+            'grunt-contrib-watch': '~0.6.1',
+            'grunt-contrib-concat': '~0.4.0',
+            'grunt-contrib-uglify': '~0.5.0',
+            'grunt-contrib-jshint': '~0.10.0',
+            'grunt-contrib-nodeunit': '~0.4.1',
+            'grunt-contrib-cssmin': '~0.10.0',
+            'grunt-contrib-compass': '~0.9.0',
             'grunt-csscomb': '~0.5.0',
-            "grunt-contrib-copy": "~0.4.1",
-            "grunt-styleguide": "~0.2.12",
-            'grunt-imageoptim': '~1.4.0',
-            "grunt-exec": "~0.4.2"
+            "grunt-contrib-copy": "~0.5.0",
+            "grunt-styleguide": "~0.2.15",
+            'grunt-imageoptim': '~1.4.1',
+            "grunt-exec": "~0.4.6"
         };
         // Sanitize names where we need to for PHP/JS
         props.name = props.title.replace( /\s+/g, '-' ).toLowerCase();
@@ -91,7 +91,7 @@ exports.template = function( grunt, init, done ) {
 
         fs.writeFileSync(
             path.resolve('_sass')+'/'+props.file_name+'.scss',
-            '@import "variable";\n@import "compass";\n@import "mixins";\n//import normalize\n@import url("normalize.min.css");\n//Write style start\n\n//Write style end\n//import entry-contents style (styledocco)\n@import "entry-contents.scss";\n//import widget style (styledocco)\n@import "widget.scss";\n//What WordPress?\n@import "_wordpress.scss";\n@import "_extend.scss";'
+            '@import "variable";\n@import "compass";\n@import "mixins";\n//import normalize\n@import url("normalize.min.css");\n/* Bass */\n\n/* link color\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */\n\n/* Layout\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */\n\n/* Header\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */\n\n/* Common\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */\n\n/* HOME\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */\n\n/* Archive\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */\n\n/* Single\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */\n\n/* Page\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */\n\n/* Footer\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */\n\n/* Other\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */\n\n//Write style start\n\n//Write style end\n//import entry-contents style (styledocco)\n@import "entry-contents";\n//import widget style (styledocco)\n@import "widget";\n//What WordPress?\n@import "wordpress";\n@import "extend";'
         );
 
        fs.writeFileSync(
